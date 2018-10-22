@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<%if current_user.applicant? %>
+  <h1>Job Openings:</h1>
+<% else %>
+  <h1> Your listed jobs:</h1>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @jobs.each do |job| %>
+      <tr>
+        <td>Title: <%= job.title %></td>
+        <% if current_user.employer? %>
+          <td>Number of Applications: <%= job.job_applications.count %></td>
+          <td><%= link_to 'Show', job %></td>
+          <td><%= link_to 'Edit', edit_job_path(job) %></td>
+          <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% else %>
+          <td><%= link_to 'View Job Description', job %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Job', new_job_path %>

@@ -1,0 +1,17 @@
+<p id="notice"><%= notice %></p>
+
+<h2>Job Title: <%=@job.title%></h2>
+<h3>Description: <%=@job.description%></h3>
+<% if current_user.employer? %>
+  <h4>Applicants:</h4>
+  <li>
+  <%= @job.applicants.order(:name).pluck(:name).each do |u| %>
+    <ul><%= u %></ul>
+  <% end %>
+  </li>
+<% elsif current_user.applicant? && current_user.job_applications.where(job_id: @job.id).empty? %>
+  <%= link_to 'Apply to this job', new_job_job_application_path(@job) %>
+<% end %>
+
+<%= link_to 'Edit', edit_job_path(@job) %> |
+<%= link_to 'Back', jobs_path %>
